@@ -51,6 +51,6 @@ module "records" {
       records = [
         module.jenkins_agent.private_ip
       ]
-    },
+    }
   ]
 }
