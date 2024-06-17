@@ -18,3 +18,24 @@ data "aws_ami" "ami_info" {
         values = ["hvm"]
     }
 }
+
+data "aws_ami" "nexus_ami_info" {
+
+    most_recent = true
+    owners = ["852699756283"]
+
+    filter {
+        name   = "name"
+        values = ["redhat-nexus-*"]
+    }
+
+    filter {
+        name   = "root-device-type"
+        values = ["ebs"]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = ["hvm"]
+    }
+}

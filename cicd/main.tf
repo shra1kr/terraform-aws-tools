@@ -29,6 +29,21 @@ module "jenkins_agent" {
   }
 }
 
+module "nexus" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+
+  name = "nexus"
+
+  instance_type          = "t3.small"
+  vpc_security_group_ids = ["sg-018a7f01c6abc8b7d"]
+  # convert StringList to list and get first element
+  subnet_id = "subnet-01fec9beed5426f7a"
+  ami = data.aws_ami.nexus_ami_info.id
+  tags = {
+    Name = "nexus"
+  }
+}
+
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
@@ -50,6 +65,14 @@ module "records" {
       ttl     = 1
       records = [
         module.jenkins_agent.private_ip
+      ]
+    },
+     {
+      name    = "nexus"
+      type    = "A"
+      ttl     = 1
+      records = [
+        module.nexus.private_ip
       ]
     }
   ]
